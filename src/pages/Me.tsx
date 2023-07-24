@@ -1,4 +1,3 @@
-import React from 'react'
 import Text from '../UI/Text'
 import useUser from '../hooks/useUser'
 
