@@ -1,0 +1,24 @@
+
+#root {
+    $timeout: 0.5s;
+}
+// width growth aniamtion
+
+@keyframes grow-width-animation {
+    0% {
+        width: 0;
+    }
+    100% {
+        width: 100%;
+    }
+}
+
+.grow-width-animation {
+  overflow: hidden;
+  animation: grow-width-animation var(--timeout) linear forwards;
+  position: absolute;
+  left: 0;
+  height: 100%;
+  z-index: -1;
+}
+
