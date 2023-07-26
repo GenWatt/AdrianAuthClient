@@ -15,7 +15,7 @@ const loginUser = async (user: ILoginUser) => {
 
 const getUser = async () => {
   const response = await api.get('/profile')
-  console.log(response.data, 'response.data')
+
   return response.data
 }
 
@@ -34,4 +34,31 @@ const newPassword = async (newPassword: INewPasswordPayload) => {
   return response.data
 }
 
-export { registerUser, loginUser, getUser, resetPassword, newPassword }
+const setUserProfileImage = async (image: File) => {
+  const formData = new FormData()
+  formData.append('profilePicture', image)
+
+  const response = await api.put('/profile-picture', formData, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+  })
+
+  return response.data
+}
+
+const deactivateAccountApi = async () => {
+  const response = await api.put('/deactivate')
+
+  return response.data
+}
+
+export {
+  registerUser,
+  loginUser,
+  getUser,
+  resetPassword,
+  newPassword,
+  setUserProfileImage,
+  deactivateAccountApi,
+}

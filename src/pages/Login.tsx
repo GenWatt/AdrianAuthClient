@@ -21,14 +21,13 @@ export default function Login() {
 
   const submit = async (values: ILoginUser) => {
     try {
-      const response = await loginMutation.mutateAsync(values)
-      console.log(response)
-      navigate('/account')
+      await loginMutation.mutateAsync(values)
+      navigate('/account/me')
     } catch (error) {
       if (error instanceof AxiosError) {
-        toastContext?.addErrorToast(
-          error.response?.data.message || 'Something went wrong'
-        )
+        toastContext?.addErrorToast({
+          message: error.response?.data.message || 'Something went wrong',
+        })
       }
     }
   }

@@ -29,9 +29,9 @@ function Register() {
       navigate('/confirm-email?email=' + values.email, { replace: true })
     } catch (error) {
       if (error instanceof AxiosError) {
-        toastContext?.addErrorToast(
-          error.response?.data.message || 'Something went wrong'
-        )
+        toastContext?.addErrorToast({
+          message: error.response?.data.message || 'Something went wrong',
+        })
       }
     }
   }

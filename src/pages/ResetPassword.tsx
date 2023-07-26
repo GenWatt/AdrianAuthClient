@@ -21,7 +21,9 @@ export default function ResetPassword() {
     try {
       await resetPasswordMutation.mutateAsync(values.email)
 
-      toastContext?.addSuccessToast('Check your email for a reset link')
+      toastContext?.addSuccessToast({
+        message: 'Check your email for a reset link',
+      })
     } catch (error) {
       console.log(error)
       if (error instanceof AxiosError)

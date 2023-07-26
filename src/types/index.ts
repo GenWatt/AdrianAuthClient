@@ -52,6 +52,13 @@ interface INewPasswordPayload extends INewPassword {
   token: string
 }
 
+interface IToastOptions {
+  timeout?: number
+  group?: string
+  message: string
+  unique?: boolean
+}
+
 export enum ToastType {
   Success = 'success',
   Error = 'error',
@@ -63,8 +70,12 @@ interface IToastContext {
   toasts: ToastProps[]
   addToast: (toast: ToastProps) => void
   removeToast: (id: string) => void
-  addErrorToast: (message: string, timeout?: number) => void
-  addSuccessToast: (message: string, timeout?: number) => void
+  addErrorToast: (options: IToastOptions) => void
+  addSuccessToast: (options: IToastOptions) => void
+}
+
+interface IProfilePictureResponse extends IApiResponse {
+  profilePicture: string
 }
 
 export type {
@@ -76,4 +87,6 @@ export type {
   INewPassword,
   INewPasswordPayload,
   IApiResponse,
+  IToastOptions,
+  IProfilePictureResponse,
 }

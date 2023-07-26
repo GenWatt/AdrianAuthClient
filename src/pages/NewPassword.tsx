@@ -28,11 +28,13 @@ export default function NewPassword() {
         token: searchParams.get('token')!,
       })
 
-      toastContext?.addSuccessToast('Password successfully changed')
+      toastContext?.addSuccessToast({
+        message: 'Password changed successfully',
+      })
       navigate('/login')
     } catch (error) {
       if (error instanceof AxiosError) {
-        toastContext?.addErrorToast(error.response?.data.message)
+        toastContext?.addErrorToast({ message: error.response?.data.message })
       }
     }
   }

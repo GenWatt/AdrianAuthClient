@@ -26,6 +26,8 @@ export interface ToastProps extends React.HTMLAttributes<HTMLDivElement> {
   show: boolean
   type: ToastType
   timeout?: number
+  group?: string
+  unique?: boolean
 }
 
 export default function Toast({
@@ -36,6 +38,8 @@ export default function Toast({
   type,
   id,
   timeout,
+  unique,
+  group,
   ...rest
 }: ToastProps) {
   const toastContext = useContext(ToastContext)
