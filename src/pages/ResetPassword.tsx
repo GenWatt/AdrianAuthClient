@@ -6,29 +6,27 @@ import { useMutation } from 'react-query'
 import { resetPassword } from '../api/userApi'
 import { ToastContext } from '../context/ToastContext'
 import { AxiosError } from 'axios'
+import useError from '../hooks/useError'
+import Button from '../UI/Button'
 
 const initialValues = {
   email: '',
 }
 
 export default function ResetPassword() {
+  const { handleError } = useError()
   const resetPasswordMutation = useMutation<string, AxiosError, string>(
-    resetPassword
+    resetPassword,
+    { onError: handleError }
   )
   const toastContext = useContext(ToastContext)
 
   const handleSubmit = async (values: typeof initialValues) => {
-    try {
-      await resetPasswordMutation.mutateAsync(values.email)
+    await resetPasswordMutation.mutateAsync(values.email)
 
-      toastContext?.addSuccessToast({
-        message: 'Check your email for a reset link',
-      })
-    } catch (error) {
-      console.log(error)
-      if (error instanceof AxiosError)
-        toastContext?.addErrorToast(error.response?.data.message)
-    }
+    toastContext?.addSuccessToast({
+      message: 'Check your email for a reset link',
+    })
   }
 
   const resetPasswordForm = useFormik({
@@ -47,13 +45,11 @@ export default function ResetPassword() {
           name="email"
           value={resetPasswordForm.values.email}
           onChange={resetPasswordForm.handleChange}
+          className="mb-3"
         />
-        <button
-          disabled={resetPasswordMutation.isLoading}
-          className="mt-3 btn btn-primary"
-        >
+        <Button isLoading={resetPasswordMutation.isLoading}>
           Reset Password
-        </button>
+        </Button>
       </form>
     </>
   )

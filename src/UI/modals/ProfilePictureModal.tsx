@@ -10,6 +10,10 @@ import { setUserProfileImage } from '../../api/userApi'
 import { ToastContext } from '../../context/ToastContext'
 import { IProfilePictureResponse } from '../../types'
 import { AxiosError } from 'axios'
+import useError from '../../hooks/useError'
+import Button from '../Button'
+import { XSquare } from 'react-bootstrap-icons'
+import CloseButton from '../CloseButton'
 
 interface ProfilePictureModalProps extends Omit<ModalProps, 'children'> {
   close: () => void
@@ -25,10 +29,7 @@ export default function ProfilePictureModal({
   const toastContext = useContext(ToastContext)
   const queryClient = useQueryClient()
   const imageRef = useRef<HTMLInputElement>(null)
-
-  const handleError = (error: AxiosError) => {
-    toastContext?.addErrorToast({ message: error.message })
-  }
+  const { handleError } = useError()
 
   const imageMutation = useMutation<IProfilePictureResponse, AxiosError, any>(
     setUserProfileImage,
@@ -66,13 +67,7 @@ export default function ProfilePictureModal({
         <Text type="h5" className="modal-title text-light">
           Profile Picture
         </Text>
-        <button
-          type="button"
-          className="btn-close"
-          data-bs-dismiss="modal"
-          aria-label="Close"
-          onClick={close}
-        ></button>
+        <CloseButton data-bs-dismiss="modal" onClick={close}></CloseButton>
       </div>
       <form onSubmit={handleSubmit}>
         <div className="modal-body">
@@ -94,21 +89,12 @@ export default function ProfilePictureModal({
           />
         </div>
         <div className="modal-footer">
-          <button
-            type="button"
-            className="btn btn-secondary"
-            data-bs-dismiss="modal"
-            onClick={close}
-          >
+          <Button variant="secondary" data-bs-dismiss="modal" onClick={close}>
             Close
-          </button>
-          <button
-            disabled={imageMutation.isLoading}
-            type="submit"
-            className="btn btn-primary text-light"
-          >
+          </Button>
+          <Button isLoading={imageMutation.isLoading} type="submit">
             Save changes
-          </button>
+          </Button>
         </div>
       </form>
     </Modal>

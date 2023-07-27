@@ -7,9 +7,10 @@ import InputControl from '../UI/InputControl'
 import { useContext, useEffect } from 'react'
 import NewPasswordSchema from '../validators/newPasswordSchema'
 import { useMutation } from 'react-query'
-import { AxiosError } from 'axios'
 import { ToastContext } from '../context/ToastContext'
 import { newPassword } from '../api/userApi'
+import useError from '../hooks/useError'
+import Button from '../UI/Button'
 
 const initialValues: INewPassword = {
   password: '',
@@ -17,26 +18,24 @@ const initialValues: INewPassword = {
 }
 
 export default function NewPassword() {
-  const newPasswordMutation = useMutation(newPassword)
   const [searchParams] = useSearchParams()
   const navigate = useNavigate()
   const toastContext = useContext(ToastContext)
-  const handleSubmit = async (values: INewPassword) => {
-    try {
-      await newPasswordMutation.mutateAsync({
-        ...values,
-        token: searchParams.get('token')!,
-      })
+  const { handleError } = useError()
+  const newPasswordMutation = useMutation(newPassword, {
+    onError: handleError,
+  })
 
-      toastContext?.addSuccessToast({
-        message: 'Password changed successfully',
-      })
-      navigate('/login')
-    } catch (error) {
-      if (error instanceof AxiosError) {
-        toastContext?.addErrorToast({ message: error.response?.data.message })
-      }
-    }
+  const handleSubmit = async (values: INewPassword) => {
+    await newPasswordMutation.mutateAsync({
+      ...values,
+      token: searchParams.get('token')!,
+    })
+
+    toastContext?.addSuccessToast({
+      message: 'Password changed successfully',
+    })
+    navigate('/login')
   }
 
   const newPasswordForm = useFormik({
@@ -75,13 +74,11 @@ export default function NewPassword() {
           value={newPasswordForm.values.confirmPassword}
           onChange={newPasswordForm.handleChange}
           errorMessage={newPasswordForm.errors.confirmPassword}
+          className="mb-3"
         />
-        <button
-          disabled={newPasswordMutation.isLoading}
-          className="mt-3 btn btn-primary"
-        >
+        <Button isLoading={newPasswordMutation.isLoading}>
           Create new password
-        </button>
+        </Button>
       </form>
     </div>
   )

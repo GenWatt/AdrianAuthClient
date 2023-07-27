@@ -53,6 +53,18 @@ const deactivateAccountApi = async () => {
   return response.data
 }
 
+const deleteAccountApi = async () => {
+  const response = await api.delete('/delete-account')
+
+  return response.data
+}
+
+const logoutUser = async () => {
+  const response = await api.post('/logout')
+
+  return response.data
+}
+
 export {
   registerUser,
   loginUser,
@@ -61,4 +73,6 @@ export {
   newPassword,
   setUserProfileImage,
   deactivateAccountApi,
+  deleteAccountApi,
+  logoutUser,
 }

@@ -1,13 +1,12 @@
-import { useContext } from 'react'
 import Header from '../UI/Header'
 import { useFormik } from 'formik'
 import InputControl from '../UI/InputControl'
 import { ILoginUser } from '../types'
 import { useMutation } from 'react-query'
 import { loginUser } from '../api/userApi'
-import { ToastContext } from '../context/ToastContext'
-import { AxiosError } from 'axios'
 import { NavLink, useNavigate } from 'react-router-dom'
+import useError from '../hooks/useError'
+import Button from '../UI/Button'
 
 const initalValues: ILoginUser = {
   identifier: '',
@@ -15,21 +14,16 @@ const initalValues: ILoginUser = {
 }
 
 export default function Login() {
-  const loginMutation = useMutation(loginUser)
-  const toastContext = useContext(ToastContext)
+  const { handleError } = useError()
+
   const navigate = useNavigate()
+  const loginMutation = useMutation(loginUser, {
+    onError: handleError,
+  })
 
   const submit = async (values: ILoginUser) => {
-    try {
-      await loginMutation.mutateAsync(values)
-      navigate('/account/me')
-    } catch (error) {
-      if (error instanceof AxiosError) {
-        toastContext?.addErrorToast({
-          message: error.response?.data.message || 'Something went wrong',
-        })
-      }
-    }
+    await loginMutation.mutateAsync(values)
+    navigate('/account/me')
   }
 
   const loginForm = useFormik({
@@ -69,9 +63,9 @@ export default function Login() {
         <div className="mb-3">
           <NavLink to="/reset-password">Forgot your password?</NavLink>
         </div>
-        <button type="submit" className="btn btn-primary">
+        <Button isLoading={loginMutation.isLoading} type="submit">
           Login
-        </button>
+        </Button>
       </form>
     </>
   )

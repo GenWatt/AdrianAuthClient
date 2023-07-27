@@ -7,8 +7,8 @@ import { useMutation } from 'react-query'
 import { IApiResponse, IRegisterUser } from '../types'
 import Header from '../UI/Header'
 import { AxiosError } from 'axios'
-import { useContext } from 'react'
-import { ToastContext } from '../context/ToastContext'
+import useError from '../hooks/useError'
+import Button from '../UI/Button'
 
 const initialValues: IRegisterUser = {
   username: '',
@@ -17,23 +17,16 @@ const initialValues: IRegisterUser = {
 }
 
 function Register() {
-  const register = useMutation<IRegisterUser, AxiosError<IApiResponse>, any>(
-    registerUser
-  )
   const navigate = useNavigate()
-  const toastContext = useContext(ToastContext)
+  const { handleError } = useError()
+  const register = useMutation<IRegisterUser, AxiosError<IApiResponse>, any>(
+    registerUser,
+    { onError: handleError }
+  )
 
   const submit = async (values: IRegisterUser) => {
-    try {
-      await register.mutateAsync(values)
-      navigate('/confirm-email?email=' + values.email, { replace: true })
-    } catch (error) {
-      if (error instanceof AxiosError) {
-        toastContext?.addErrorToast({
-          message: error.response?.data.message || 'Something went wrong',
-        })
-      }
-    }
+    await register.mutateAsync(values)
+    navigate('/confirm-email?email=' + values.email, { replace: true })
   }
 
   const formik = useFormik({
@@ -84,13 +77,9 @@ function Register() {
           <NavLink to="/login">Already have an account? Login</NavLink>
         </div>
         <div className="mt-3">
-          <button
-            className="btn btn-primary"
-            type="submit"
-            disabled={register.isLoading}
-          >
+          <Button type="submit" isLoading={register.isLoading}>
             Register
-          </button>
+          </Button>
         </div>
       </form>
     </>

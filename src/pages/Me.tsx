@@ -1,4 +1,3 @@
-import { useMutation } from 'react-query'
 import AccountControl from '../UI/AccountControl'
 import Loader from '../UI/Loader'
 import Text from '../UI/Text'
@@ -8,23 +7,12 @@ import ProfilePicture from '../components/ProfilePicture'
 import useDate from '../hooks/useDate'
 import useModal from '../hooks/useModal'
 import useUser from '../hooks/useUser'
-import { deactivateAccountApi } from '../api/userApi'
-import { useNavigate } from 'react-router-dom'
+import UserAccountActions from '../components/UserAccountActions'
 
 export default function Me() {
   const { data, isLoading } = useUser()
   const { dateToString } = useDate()
   const { isOpen, closeModal, openModal } = useModal()
-  const deactivateAccountMutation = useMutation(deactivateAccountApi)
-  const navigate = useNavigate()
-
-  const deactivateAccount = async () => {
-    const response = await deactivateAccountMutation.mutateAsync()
-
-    if (response.success) {
-      navigate('/login')
-    }
-  }
 
   return (
     <div>
@@ -58,6 +46,7 @@ export default function Me() {
                 : 'Your E-mail is not verified'}
             </Text>
           </AccountControl>
+          <UserAccountActions />
         </div>
       ) : (
         <Loader className="d-flex justify-content-center align-items-center" />
@@ -67,12 +56,6 @@ export default function Me() {
         isOpen={isOpen}
         close={closeModal}
       />
-      <div className="d-flex justify-content-end gap-2 mt-3">
-        <button className="btn btn-danger" onClick={deactivateAccount}>
-          Deactivate account
-        </button>
-        <button className="btn btn-danger">Delete Account</button>
-      </div>
     </div>
   )
 }

@@ -2,6 +2,7 @@ import React, { useContext, useEffect } from 'react'
 import { ToastType } from '../types'
 import { ToastContext } from '../context/ToastContext'
 import '../sass/toast.scss'
+import CloseButton from './CloseButton'
 
 const getColor = (className: string, type: ToastType) => {
   switch (type) {
@@ -82,13 +83,7 @@ export default function Toast({
         <strong className="mr-auto">{title}</strong>
         <div>
           {timestamp && <small>{timestamp}</small>}
-          <button
-            type="button"
-            className="close btn-close fs-6"
-            data-dismiss="toast"
-            aria-label="Close"
-            onClick={onClose}
-          ></button>
+          <CloseButton data-dismiss="toast" onClick={onClose}></CloseButton>
         </div>
       </div>
       <div className={`toast-body ${getColor('text', type)}`}>{message}</div>

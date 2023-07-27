@@ -22,7 +22,7 @@ export default function ProfilePicture({
         onClick={onClick}
       >
         <img
-          className="w-100 h-100 rounded-circle"
+          className="w-100 h-100 rounded-circle d-flex justify-content-center align-items-center"
           src={src ? src : NoUserImage}
           alt={alt ? alt : 'Profile picture'}
           {...rest}

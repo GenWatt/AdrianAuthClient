@@ -1,8 +1,10 @@
 // custom variables
-$primary: #26d30f;
+$primary: #104F55;
+$secondary: #32746D;
 $light-danger: #f7616d;
 $light-success: #19a706;
 $light-info: #0f9ad3;
+$headline: #9EC5AB;
 
 .show {
     display: block;
@@ -70,7 +72,8 @@ $custom-theme-colors: (
     "light-danger": $light-danger,
     "light-success": $light-success,
     "light-info": $light-info,
-    "light-primary": $primary
+    "light-primary": $primary,
+    "headline":  $headline,
 );
 
 $theme-colors: map-merge($theme-colors, $custom-theme-colors);
