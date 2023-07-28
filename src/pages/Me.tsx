@@ -18,12 +18,12 @@ export default function Me() {
     <div>
       {!isLoading ? (
         <div>
-          <Text type="h2">
+          <Text className="mt-2" type="h2">
             <strong className="text-primary">{data?.user?.username}</strong>
             &nbsp;settings account
           </Text>
           <ProfilePicture
-            containerProps={{ className: 'd-flex justify-content-center' }}
+            containerProps={{ className: 'd-flex justify-content-center mt-3' }}
             src={data?.user.profilePicture}
             alt="Profile picture"
             onClick={openModal}

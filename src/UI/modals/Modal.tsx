@@ -18,7 +18,7 @@ export default function Modal({
       {...rest}
     >
       <div className="modal-dialog">
-        <div className="modal-content">{children}</div>
+        <div className="modal-content bg-headline">{children}</div>
       </div>
     </div>
   )

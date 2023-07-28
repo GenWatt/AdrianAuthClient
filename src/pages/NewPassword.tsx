@@ -2,7 +2,7 @@ import { useFormik } from 'formik'
 import { INewPassword } from '../types'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import Header from '../UI/Header'
-import InputControl from '../UI/InputControl'
+import InputControl from '../UI/InputControl/InputControl'
 
 import { useContext, useEffect } from 'react'
 import NewPasswordSchema from '../validators/newPasswordSchema'

@@ -1,12 +1,12 @@
-import Header from '../UI/Header'
+import Header from '../../UI/Header'
 import { useFormik } from 'formik'
-import InputControl from '../UI/InputControl'
-import { ILoginUser } from '../types'
+import { InputControl } from '../../UI/InputControl'
+import { ILoginUser } from '../../types'
 import { useMutation } from 'react-query'
-import { loginUser } from '../api/userApi'
+import { loginUser } from '../../api/userApi'
 import { NavLink, useNavigate } from 'react-router-dom'
-import useError from '../hooks/useError'
-import Button from '../UI/Button'
+import useError from '../../hooks/useError'
+import Button from '../../UI/Button'
 
 const initalValues: ILoginUser = {
   identifier: '',

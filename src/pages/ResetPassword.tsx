@@ -1,6 +1,6 @@
 import { useContext } from 'react'
 import Header from '../UI/Header'
-import InputControl from '../UI/InputControl'
+import InputControl from '../UI/InputControl/InputControl'
 import { useFormik } from 'formik'
 import { useMutation } from 'react-query'
 import { resetPassword } from '../api/userApi'

@@ -1,7 +1,7 @@
 import { useContext } from 'react'
 import Modal, { ModalProps } from './Modal'
 import Text from '../Text'
-import InputControl from '../InputControl'
+import InputControl from '../InputControl/InputControl'
 import ProfilePicture from '../../components/ProfilePicture'
 import { useRef } from 'react'
 import useFile from '../../hooks/useFile'

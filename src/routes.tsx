@@ -1,7 +1,7 @@
 import { Navigate, RouteObject } from 'react-router-dom'
 import Account from './pages/Account'
 import ConfirmEmail from './pages/ConfirmEmail'
-import Login from './pages/Login'
+import Login from './pages/Login/Login'
 import Register from './pages/Register'
 import ResetPassword from './pages/ResetPassword'
 import NewPassword from './pages/NewPassword'

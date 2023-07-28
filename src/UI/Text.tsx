@@ -8,7 +8,7 @@ export type TextType =
   | 'h4'
   | 'h5'
   | 'h6'
-  | 'body'
+  | 'body1'
   | 'caption'
   | 'body2'
 
@@ -22,7 +22,7 @@ export default function ({
   children,
   isLoading,
   className,
-  type = 'body',
+  type = 'body1',
   ...rest
 }: TextProps) {
   const classes = `text-${type} ${className}`

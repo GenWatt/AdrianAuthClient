@@ -20,7 +20,7 @@ export default function Button({
       case 'primary':
         return 'btn btn-primary text-light'
       case 'secondary':
-        return 'btn btn-secondary'
+        return 'btn btn-secondary text-light'
       case 'danger':
         return 'btn btn-danger'
       case 'success':

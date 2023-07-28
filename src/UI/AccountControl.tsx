@@ -18,7 +18,7 @@ export default function AccountControl({
       {...rest}
     >
       <div className="d-flex">
-        <div className="vr" style={{ width: 2 }}></div>
+        {/* <div className="vr" style={{ width: 2 }}></div> */}
         <Text className="fw-bold ms-2">{title}</Text>
       </div>
 

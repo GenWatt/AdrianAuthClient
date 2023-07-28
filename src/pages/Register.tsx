@@ -1,6 +1,6 @@
 import { NavLink, useNavigate } from 'react-router-dom'
 import { useFormik } from 'formik'
-import InputControl from '../UI/InputControl'
+import InputControl from '../UI/InputControl/InputControl'
 import RegisterSchema from '../validators/registerSchema'
 import { registerUser } from '../api'
 import { useMutation } from 'react-query'
