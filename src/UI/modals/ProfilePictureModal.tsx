@@ -12,7 +12,6 @@ import { IProfilePictureResponse } from '../../types'
 import { AxiosError } from 'axios'
 import useError from '../../hooks/useError'
 import Button from '../Button'
-import { XSquare } from 'react-bootstrap-icons'
 import CloseButton from '../CloseButton'
 
 interface ProfilePictureModalProps extends Omit<ModalProps, 'children'> {

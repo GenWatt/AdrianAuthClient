@@ -27,6 +27,7 @@ interface IUser {
   provider: UserProvider
   profilePicture: string
   coverPicture: string
+  userSettings: IUserSettings
 }
 
 interface IApiResponse {
@@ -78,6 +79,14 @@ interface IProfilePictureResponse extends IApiResponse {
   profilePicture: string
 }
 
+interface IUserSettings {
+  theme: 'light' | 'dark'
+  language: 'en' | 'pl'
+  createdAt: Date
+  updatedAt: Date
+  _id: string
+}
+
 export type {
   IRegisterUser,
   IToastContext,
@@ -89,4 +98,5 @@ export type {
   IApiResponse,
   IToastOptions,
   IProfilePictureResponse,
+  IUserSettings,
 }

@@ -13,7 +13,7 @@ export default function Modal({
 }: ModalProps) {
   return (
     <div
-      className={`modal fade ${isOpen ? `show ${className}` : ''} `}
+      className={`modal fade ${isOpen ? `${className} show` : ''}`}
       tabIndex={-1}
       {...rest}
     >

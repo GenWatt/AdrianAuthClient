@@ -33,14 +33,14 @@ export default function UserAccountActions() {
         Delete Account
       </Button>
       <AreYouSureModal
-        title="Are you sure you want to delete your account pernamently?"
+        text="Are you sure you want to delete your account pernamently?"
         isOpen={deleteModal.isOpen}
         closeModal={deleteModal.closeModal}
         onYes={deleteAccount}
         isLoading={deleteAccountMutation.isLoading}
       />
       <AreYouSureModal
-        title="Are you sure you want to deactivate your account?"
+        text="Are you sure you want to deactivate your account?"
         isOpen={deactivateModal.isOpen}
         closeModal={deactivateModal.closeModal}
         onYes={deactivateAccount}
