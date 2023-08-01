@@ -4,7 +4,7 @@ import Loader from './Loader'
 import { IUser } from '../types'
 import { ToastContext } from '../context/ToastContext'
 import { useContext } from 'react'
-import { useMutation } from 'react-query'
+import { useMutation, useQueryClient } from 'react-query'
 import { logoutUser } from '../api/userApi'
 import useError from '../hooks/useError'
 import Button from './Button'
@@ -20,6 +20,7 @@ interface AppBarProps {
 
 export default function AppBar({ isLoading, appName, user }: AppBarProps) {
   const toastContext = useContext(ToastContext)
+  const queryClient = useQueryClient()
 
   const navigate = useNavigate()
   const { handleError } = useError()
@@ -31,6 +32,7 @@ export default function AppBar({ isLoading, appName, user }: AppBarProps) {
     toastContext?.addSuccessToast({
       message: 'Logged out successfully',
     })
+    await queryClient.removeQueries('user')
     navigate('/login')
   }
 

@@ -42,6 +42,7 @@ interface IUserResponse extends IApiResponse {
 interface ILoginUser {
   identifier: string
   password: string
+  callbackUrl?: string
 }
 
 interface INewPassword {

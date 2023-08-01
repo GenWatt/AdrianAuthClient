@@ -8,7 +8,10 @@ const registerUser = async (user: IRegisterUser) => {
 }
 
 const loginUser = async (user: ILoginUser) => {
-  const response = await api.post('/login', user)
+  const url = user.callbackUrl
+    ? `/login?callbackUrl=${user.callbackUrl}`
+    : '/login'
+  const response = await api.post(url, user)
 
   return response.data
 }

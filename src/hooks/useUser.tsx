@@ -1,6 +1,6 @@
 import { AxiosError } from 'axios'
 import { useContext } from 'react'
-import { useQuery } from 'react-query'
+import { useQuery, useQueryClient } from 'react-query'
 import { useNavigate } from 'react-router-dom'
 import { getUser } from '../api/userApi'
 import { ToastContext } from '../context/ToastContext'
@@ -9,9 +9,11 @@ import { IApiResponse, IUserResponse } from '../types'
 export default function useUser() {
   const navigate = useNavigate()
   const toastContext = useContext(ToastContext)
+  const queryClient = useQueryClient()
 
   const handleError = (error: AxiosError<IApiResponse>) => {
     if (error.response?.status === 401) {
+      queryClient.removeQueries('user')
       navigate('/login')
       toastContext?.addErrorToast({
         message: 'Your session has expired',
