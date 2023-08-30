@@ -38,7 +38,7 @@ export default function AppBar({ isLoading, appName, user }: AppBarProps) {
 
   return (
     <nav className="navbar bg-primary w-100">
-      <div className="d-flex justify-content-between w-100 p-3 align-items-center">
+      <div className="d-flex justify-content-between w-100 px-3 align-items-center">
         <NavLink
           to="/account/me"
           className="navbar-brand text-light fw-bold fs-3"
@@ -53,7 +53,7 @@ export default function AppBar({ isLoading, appName, user }: AppBarProps) {
             <ThemePicker />
             <NavLink to="/me" className="text-light d-flex align-items-center">
               <PersonCircle className="fs-1" />
-              {user && <Text className="pe-2 ps-2 fs-4">{user.username}</Text>}
+              {user ? <Text className="pe-2 ps-2 fs-4">{user.username}</Text> : <Text className="pe-2 ps-2 fs-4">Unknown</Text>}
             </NavLink>
             <Button variant="secondary" onClick={handleLogout}>
               Logout

@@ -80,6 +80,10 @@ interface IProfilePictureResponse extends IApiResponse {
   profilePicture: string
 }
 
+interface ICoverPictureResponse extends IApiResponse {
+  coverPicture: string
+}
+
 interface IUserSettings {
   theme: 'light' | 'dark'
   language: 'en' | 'pl'
@@ -100,4 +104,5 @@ export type {
   IToastOptions,
   IProfilePictureResponse,
   IUserSettings,
+  ICoverPictureResponse,
 }

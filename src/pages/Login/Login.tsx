@@ -7,6 +7,8 @@ import { loginUser } from '../../api/userApi'
 import { NavLink, useNavigate, useSearchParams } from 'react-router-dom'
 import useError from '../../hooks/useError'
 import Button from '../../UI/Button'
+import { useContext } from 'react'
+import { ToastContext } from '../../context/ToastContext'
 
 const initalValues: ILoginUser = {
   identifier: '',
@@ -21,6 +23,7 @@ export default function Login() {
     ? searchParams.get('brand')
     : import.meta.env.VITE_APP_NAME
   initalValues.callbackUrl = searchParams.get('callbackUrl') || ''
+  const toastContext = useContext(ToastContext)
 
   const navigate = useNavigate()
   const loginMutation = useMutation(loginUser, {
@@ -30,6 +33,9 @@ export default function Login() {
   const submit = async (values: ILoginUser) => {
     await loginMutation.mutateAsync(values)
     if (values.callbackUrl) {
+      toastContext?.addSuccessToast({
+        message: `Login successful, redirecting to ${brandName}`,
+      })
       window.location.href = values.callbackUrl
       return
     }

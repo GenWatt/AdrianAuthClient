@@ -68,6 +68,19 @@ const logoutUser = async () => {
   return response.data
 }
 
+const setUserCoverImage = async (image: File) => {
+  const formData = new FormData()
+  formData.append('coverPicture', image)
+
+  const response = await api.put('/cover-picture', formData, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+  })
+
+  return response.data
+}
+
 export {
   registerUser,
   loginUser,
@@ -78,4 +91,5 @@ export {
   deactivateAccountApi,
   deleteAccountApi,
   logoutUser,
+  setUserCoverImage,
 }

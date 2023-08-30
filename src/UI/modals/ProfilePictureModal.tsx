@@ -47,7 +47,7 @@ export default function ProfilePictureModal({
       return toastContext?.addErrorToast({ message: 'Please select a file' })
 
     const response = await imageMutation.mutateAsync(imageRef.current.files[0])
-
+    
     if (response.success) {
       toastContext?.addSuccessToast({
         message: response.message,
@@ -88,11 +88,11 @@ export default function ProfilePictureModal({
           />
         </div>
         <div className="modal-footer">
-          <Button variant="secondary" data-bs-dismiss="modal" onClick={close}>
-            Close
-          </Button>
           <Button isLoading={imageMutation.isLoading} type="submit">
             Save changes
+          </Button>
+          <Button variant="danger" data-bs-dismiss="modal" onClick={close}>
+            Close
           </Button>
         </div>
       </form>

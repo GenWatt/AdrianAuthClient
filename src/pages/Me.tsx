@@ -8,6 +8,7 @@ import useDate from '../hooks/useDate'
 import useModal from '../hooks/useModal'
 import useUser from '../hooks/useUser'
 import UserAccountActions from '../components/UserAccountActions'
+import BackgroundImage from '../components/BackgroundImage'
 
 export default function Me() {
   const { data, isLoading } = useUser()
@@ -22,12 +23,17 @@ export default function Me() {
             <strong className="text-primary">{data?.user?.username}</strong>
             &nbsp;settings account
           </Text>
-          <ProfilePicture
-            containerProps={{ className: 'd-flex justify-content-center mt-3' }}
-            src={data?.user.profilePicture}
-            alt="Profile picture"
-            onClick={openModal}
-          />
+          <div className='position-relative'>
+            <BackgroundImage style={{ zIndex: 1 }} src={data?.user.coverPicture} alt="No cover image" />
+            <ProfilePicture
+              containerProps={{ className: 'd-flex justify-content-center mt-3' }}
+              imageContainerStyles={{ zIndex: 2, position: 'relative' }}
+              src={data?.user.profilePicture}
+              alt="Profile picture"
+              isModal={true}
+              onClick={openModal}
+            />
+          </div>
           <AccountControl className="mt-3" title="E-mail">
             <Text>{data?.user?.email}</Text>
           </AccountControl>
