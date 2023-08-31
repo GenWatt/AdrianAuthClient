@@ -1,7 +1,6 @@
 import AccountControl from '../UI/AccountControl'
 import Loader from '../UI/Loader'
 import Text from '../UI/Text'
-
 import ProfilePictureModal from '../UI/modals/ProfilePictureModal'
 import ProfilePicture from '../components/ProfilePicture'
 import useDate from '../hooks/useDate'
@@ -9,11 +8,31 @@ import useModal from '../hooks/useModal'
 import useUser from '../hooks/useUser'
 import UserAccountActions from '../components/UserAccountActions'
 import BackgroundImage from '../components/BackgroundImage'
+import Button from '../UI/Button'
+import { useNavigate } from 'react-router-dom'
+import { useMutation } from 'react-query'
+import { sendConfirmEmail } from '../api/userApi'
+import useError from '../hooks/useError'
 
 export default function Me() {
   const { data, isLoading } = useUser()
   const { dateToString } = useDate()
   const { isOpen, closeModal, openModal } = useModal()
+  const navigate = useNavigate()
+  const { handleError } = useError()
+  const userData = useUser()
+  const sendVerificationEmailMutation = useMutation(sendConfirmEmail, {
+    onError: handleError,
+  })
+
+  const goToVerifyPage = async () => {
+    const email = userData.data?.user?.email
+    if (!email) return
+
+    await sendVerificationEmailMutation.mutateAsync(email)
+
+    navigate('/confirm-email?email=' + email, { replace: true })
+  }
 
   return (
     <div>
@@ -44,13 +63,16 @@ export default function Me() {
             <Text>{dateToString(data?.user?.createdAt)}</Text>
           </AccountControl>
           <AccountControl title="E-mail verification">
-            <Text
-              className={data?.user.isVerified ? 'text-success' : 'text-danger'}
-            >
-              {data?.user?.isVerified
-                ? 'Your E-mail is verfied'
-                : 'Your E-mail is not verified'}
-            </Text>
+            <div className='d-flex gap-2 align-items-center'>
+              <Text
+                className={data?.user.isVerified ? 'text-success' : 'text-danger'}
+              >
+                {data?.user?.isVerified
+                  ? 'Your E-mail is verfied'
+                  : 'Your E-mail is not verified' }
+              </Text>
+              {!data?.user?.isVerified && <Button onClick={goToVerifyPage}>Verfiy now!</Button>}
+            </div>
           </AccountControl>
           <UserAccountActions />
         </div>

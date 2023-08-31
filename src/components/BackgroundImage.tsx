@@ -1,19 +1,26 @@
-import { useEffect, useState, useRef, useContext } from "react"
-import Text from "../UI/Text"
-import Button from "../UI/Button"
-import { useMutation, useQueryClient } from "react-query"
-import { AxiosError } from "axios"
-import useError from "../hooks/useError"
-import { IProfilePictureResponse } from "../types"
-import { ToastContext } from "../context/ToastContext"
-import { setUserCoverImage } from "../api/userApi"
+import { useEffect, useState, useRef, useContext } from 'react'
+import Text from '../UI/Text'
+import Button from '../UI/Button'
+import { useMutation, useQueryClient } from 'react-query'
+import { AxiosError } from 'axios'
+import useError from '../hooks/useError'
+import { IProfilePictureResponse } from '../types'
+import { ToastContext } from '../context/ToastContext'
+import { setUserCoverImage } from '../api/userApi'
+import BackgroundImageOverlay from './BackgroundImageOverlay'
+import Loader from '../UI/Loader'
 
-interface BackgroundImageProps extends React.ImgHTMLAttributes<HTMLImageElement> {
-    src: string | undefined
-    alt: string
+interface BackgroundImageProps
+  extends React.ImgHTMLAttributes<HTMLImageElement> {
+  src: string | undefined
+  alt: string
 }
 
-export default function BackgroundImage({ src, alt, ...rest} : BackgroundImageProps) {  
+export default function BackgroundImage({
+  src,
+  alt,
+  ...rest
+}: BackgroundImageProps) {
   const [isHovering, setIsHovering] = useState(false)
   const modalRef = useRef<HTMLDivElement | null>(null)
   const inputRef = useRef<HTMLInputElement | null>(null)
@@ -21,7 +28,7 @@ export default function BackgroundImage({ src, alt, ...rest} : BackgroundImagePr
   const queryClient = useQueryClient()
   const { handleError } = useError()
 
-  const handleImageUploadError = (error: AxiosError<unknown, any>) => { 
+  const handleImageUploadError = (error: AxiosError<unknown, any>) => {
     handleError(error)
     resetInput()
   }
@@ -30,12 +37,13 @@ export default function BackgroundImage({ src, alt, ...rest} : BackgroundImagePr
     if (inputRef.current) inputRef.current.value = ''
   }
 
-  const coverImageMutation = useMutation<IProfilePictureResponse, AxiosError, any>(
-    setUserCoverImage,
-    {
-      onError: handleImageUploadError,
-    }
-  )
+  const coverImageMutation = useMutation<
+    IProfilePictureResponse,
+    AxiosError,
+    any
+  >(setUserCoverImage, {
+    onError: handleImageUploadError,
+  })
   const handleMouseEnter = () => {
     setIsHovering(true)
   }
@@ -53,7 +61,9 @@ export default function BackgroundImage({ src, alt, ...rest} : BackgroundImagePr
 
     if (!inputRef.current?.files?.[0]) return
 
-    const response = await coverImageMutation.mutateAsync(inputRef.current.files[0])
+    const response = await coverImageMutation.mutateAsync(
+      inputRef.current.files[0]
+    )
 
     if (response.success) {
       toastContext?.addSuccessToast({
@@ -69,41 +79,53 @@ export default function BackgroundImage({ src, alt, ...rest} : BackgroundImagePr
     if (!modalRef.current) return
     modalRef.current.addEventListener('mousemove', handleMouseEnter)
     modalRef.current.addEventListener('mouseleave', handleMouseLeave)
-  
+
     return () => {
       if (!modalRef.current) return
       modalRef.current.removeEventListener('mouseenter', handleMouseEnter)
       modalRef.current.removeEventListener('mouseleave', handleMouseLeave)
     }
   }, [])
-  
+
   return (
     <div ref={modalRef} className="position-absolute w-100 h-100" {...rest}>
-      {src ? <img 
-          src={src}
-          alt={alt}
-          className="w-100 h-100"
-          /> : 
-      <div  className="bg-primary d-flex h-100 p-2 rounded-2">
+      {src ? (
+        <img src={src} alt={alt} className="w-100 h-100" />
+      ) : (
+        <div className="bg-primary d-flex h-100 p-2 rounded-2">
           <Text className="text-light">{alt}</Text>
-      </div>}
+        </div>
+      )}
 
-      {isHovering && 
-        <div 
-          onClick={handleModalClick} 
-          className="w-100 h-100 position-absolute top-0 p-2 pointer" 
-          style={{ backgroundColor: "rgba(0,0,0, 0.5)" }}>
+      {isHovering && !coverImageMutation.isLoading && (
+        <BackgroundImageOverlay handleModalClick={handleModalClick}>
+          <div>
+            {src ? (
+              <Button>Update your cover image</Button>
+            ) : (
+              <Button>Upload a cover image</Button>
+            )}
+          </div>
+        </BackgroundImageOverlay>
+      )}
 
-        {src ? <Button>Update your cover image</Button> : <Button>Upload a cover image</Button>}
-      </div>}
+      {coverImageMutation.isLoading && (
+        <BackgroundImageOverlay handleModalClick={handleModalClick}>
+          <Text className="text-light">
+            Uploading... 
+          </Text>
+          <Loader />
+        </BackgroundImageOverlay>
+      )}
 
-      <input 
-        ref={inputRef} 
-        type="file" 
+      <input
+        ref={inputRef}
+        type="file"
         disabled={coverImageMutation.isLoading}
-        onChange={handleSubmit} 
-        hidden 
-        accept="image/png, image/jpeg, image/jpg" />
+        onChange={handleSubmit}
+        hidden
+        accept="image/png, image/jpeg, image/jpg"
+      />
     </div>
   )
 }

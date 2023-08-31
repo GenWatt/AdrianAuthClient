@@ -1,37 +1,9 @@
 import { MoonFill, BrightnessHighFill } from 'react-bootstrap-icons'
-import { useMutation, useQueryClient } from 'react-query'
 import { Tooltip } from 'react-tooltip'
-import { updateUserSettings } from '../api/userSettingsApi'
-import useError from '../hooks/useError'
-import useUser from '../hooks/useUser'
-import { useEffect } from 'react'
+import useTheme from '../hooks/useTheme'
 
 export default function ThemePicker() {
-  const { data } = useUser()
-  const { handleError } = useError()
-  const queryClient = useQueryClient()
-  const updateUserSettingsMutation = useMutation(updateUserSettings, {
-    onError: handleError,
-  })
-
-  const handleThemeChange = async () => {
-    if (!data?.user?.userSettings) return
-
-    await updateUserSettingsMutation.mutateAsync({
-      ...data.user.userSettings,
-      theme: data.user.userSettings.theme === 'dark' ? 'light' : 'dark',
-    })
-
-    await queryClient.invalidateQueries('user')
-  }
-
-  useEffect(() => {
-    if (!data?.user?.userSettings) return
-
-    const theme = data.user.userSettings.theme
-
-    document.documentElement.dataset.bsTheme = theme
-  }, [data?.user?.userSettings?.theme])
+  const { data, handleThemeChange } = useTheme()
 
   return (
     <>

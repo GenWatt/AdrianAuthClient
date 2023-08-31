@@ -1,9 +1,9 @@
 import { NavLink, useNavigate } from 'react-router-dom'
 import { PersonCircle } from 'react-bootstrap-icons'
 import Loader from './Loader'
-import { IUser } from '../types'
+import { IUser, IUserSettings } from '../types'
 import { ToastContext } from '../context/ToastContext'
-import { useContext } from 'react'
+import { useContext, useEffect } from 'react'
 import { useMutation, useQueryClient } from 'react-query'
 import { logoutUser } from '../api/userApi'
 import useError from '../hooks/useError'
@@ -11,6 +11,8 @@ import Button from './Button'
 
 import Text from './Text'
 import ThemePicker from '../components/ThemePicker'
+import useLocalStorage from '../hooks/useLocalStorage'
+import useTheme from '../hooks/useTheme'
 
 interface AppBarProps {
   appName: string
@@ -21,6 +23,8 @@ interface AppBarProps {
 export default function AppBar({ isLoading, appName, user }: AppBarProps) {
   const toastContext = useContext(ToastContext)
   const queryClient = useQueryClient()
+  const { changeTheme } = useTheme()
+  const localStorage = useLocalStorage()
 
   const navigate = useNavigate()
   const { handleError } = useError()
@@ -35,6 +39,16 @@ export default function AppBar({ isLoading, appName, user }: AppBarProps) {
     await queryClient.removeQueries('user')
     navigate('/login')
   }
+
+  useEffect(() => {
+    const storedSettings = localStorage.getObject(
+      'userSettings'
+    ) as IUserSettings | null
+
+    if (storedSettings) {
+      changeTheme(storedSettings.theme)
+    }
+  }, [])
 
   return (
     <nav className="navbar bg-primary w-100">
@@ -52,7 +66,7 @@ export default function AppBar({ isLoading, appName, user }: AppBarProps) {
           <div className="d-flex align-items-center text-white gap-2">
             <ThemePicker />
             <NavLink to="/me" className="text-light d-flex align-items-center">
-              <PersonCircle className="fs-1" />
+              <PersonCircle className="fs-3" />
               {user ? <Text className="pe-2 ps-2 fs-4">{user.username}</Text> : <Text className="pe-2 ps-2 fs-4">Unknown</Text>}
             </NavLink>
             <Button variant="secondary" onClick={handleLogout}>

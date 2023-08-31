@@ -7,7 +7,7 @@ export default function () {
   return (
     <>
       <Header
-        text="Confirm your E-mail -"
+        text="Confirm your E-mail - "
         headlineText={searchParams.get('email')!}
       ></Header>
 

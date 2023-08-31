@@ -81,6 +81,12 @@ const setUserCoverImage = async (image: File) => {
   return response.data
 }
 
+const sendConfirmEmail = async (email: string) => {
+  const response = await api.get('/send-confirm-email?email=' + email)
+
+  return response.data
+}
+
 export {
   registerUser,
   loginUser,
@@ -91,5 +97,6 @@ export {
   deactivateAccountApi,
   deleteAccountApi,
   logoutUser,
+  sendConfirmEmail,
   setUserCoverImage,
 }

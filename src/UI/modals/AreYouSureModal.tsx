@@ -37,7 +37,7 @@ export default function AreYouSureModal({
       </div>
       <div className="modal-footer">
         <Button
-          variant="secondary"
+          variant="danger"
           data-bs-dismiss="modal"
           onClick={closeModal}
         >

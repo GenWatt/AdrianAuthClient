@@ -2,13 +2,14 @@ import Header from '../../UI/Header'
 import { useFormik } from 'formik'
 import { InputControl } from '../../UI/InputControl'
 import { ILoginUser } from '../../types'
-import { useMutation } from 'react-query'
+import { useMutation, useQueryClient } from 'react-query'
 import { loginUser } from '../../api/userApi'
 import { NavLink, useNavigate, useSearchParams } from 'react-router-dom'
 import useError from '../../hooks/useError'
 import Button from '../../UI/Button'
-import { useContext } from 'react'
+import { useContext, useEffect } from 'react'
 import { ToastContext } from '../../context/ToastContext'
+import useUser from '../../hooks/useUser'
 
 const initalValues: ILoginUser = {
   identifier: '',
@@ -29,9 +30,13 @@ export default function Login() {
   const loginMutation = useMutation(loginUser, {
     onError: handleError,
   })
+  const userData = useUser(false)
+  const queryClient  = useQueryClient()
 
   const submit = async (values: ILoginUser) => {
     await loginMutation.mutateAsync(values)
+    queryClient.invalidateQueries('user')
+
     if (values.callbackUrl) {
       toastContext?.addSuccessToast({
         message: `Login successful, redirecting to ${brandName}`,
@@ -46,12 +51,17 @@ export default function Login() {
   const loginForm = useFormik({
     initialValues: initalValues,
     onSubmit: submit,
-  })
+  }) 
+
+  useEffect(() => {
+    if (userData.data?.user) {
+      navigate('/account/me')
+    }
+  }, [userData.data?.user])
 
   return (
     <>
       <Header text="Login to - " headlineText={brandName} />
-
       <form className="container" onSubmit={loginForm.handleSubmit}>
         <InputControl
           label="Username or Email"
