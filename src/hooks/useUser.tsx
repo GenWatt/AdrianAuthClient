@@ -18,14 +18,13 @@ export default function useUser(navigateToLogin: boolean = true) {
      
       if (navigateToLogin) {
         queryClient.removeQueries('user')
+        toastContext?.addErrorToast({
+          message: 'Your session has expired',
+          unique: true,
+          group: 'Auth',
+        })
         return navigate('/login')
       }
-
-      toastContext?.addErrorToast({
-        message: 'Your session has expired',
-        unique: true,
-        group: 'Auth',
-      })
 
       return
     }
@@ -49,7 +48,6 @@ export default function useUser(navigateToLogin: boolean = true) {
 
   useEffect(() => {
     if (userQuery.data?.user) {
-      console.log('userQuery.data?.user', userQuery.data?.user)
       localStorage.setObject('userSettings', userQuery.data?.user.userSettings)
     }
   }, [userQuery.data?.user])
