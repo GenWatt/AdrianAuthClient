@@ -1,7 +1,7 @@
 import { NavLink, useNavigate } from 'react-router-dom'
 import { useFormik } from 'formik'
 import InputControl from '../UI/InputControl/InputControl'
-import RegisterSchema from '../validators/registerSchema'
+import RegisterSchema, { passwordRules } from '../validators/registerSchema'
 import { registerUser } from '../api'
 import { useMutation } from 'react-query'
 import { IApiResponse, IRegisterUser } from '../types'
@@ -9,6 +9,7 @@ import Header from '../UI/Header'
 import { AxiosError } from 'axios'
 import useError from '../hooks/useError'
 import Button from '../UI/Button'
+import PasswordStregnth from '../components/PasswordStregnth'
 
 const initialValues: IRegisterUser = {
   username: '',
@@ -73,6 +74,7 @@ function Register() {
           value={formik.values.password}
           errorMessage={formik.errors.password}
         />
+        <PasswordStregnth password={formik.values.password} rules={passwordRules} />
         <div className="mt-3">
           <NavLink to="/login">Already have an account? Login</NavLink>
         </div>

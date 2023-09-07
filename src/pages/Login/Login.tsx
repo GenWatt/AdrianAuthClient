@@ -97,7 +97,7 @@ export default function Login() {
         <div className="mb-3">
           <NavLink to="/reset-password">Forgot your password?</NavLink>
         </div>
-        <Button isLoading={loginMutation.isLoading} type="submit">
+        <Button isLoading={loginMutation.isLoading} type="submit"> 
           Login
         </Button>
       </form>

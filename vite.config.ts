@@ -7,12 +7,11 @@ export default defineConfig({
   define: {
     // 'process.env': process.env,
   },
-  // server: {
-  //   watch: {
-  //     usePolling: true,
-  //   },
-  //   host: true, // needed for the Docker Container port mapping to work
-  //   strictPort: true,
-  //   port: 3000, // you can replace this port with any port
-  // }
+  server : {
+    watch: {
+      usePolling: true,
+    },
+    host: '0.0.0.0',
+    port: 5173,
+  }
 })

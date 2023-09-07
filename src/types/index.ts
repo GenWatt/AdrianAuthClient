@@ -92,6 +92,14 @@ interface IUserSettings {
   _id: string
 }
 
+interface IPasswordRules {
+  minLength?: number
+  minLowercase?: number
+  minUppercase?: number
+  minNumbers?: number
+  minSymbols?: number
+}
+
 export type {
   IRegisterUser,
   IToastContext,
@@ -105,4 +113,5 @@ export type {
   IProfilePictureResponse,
   IUserSettings,
   ICoverPictureResponse,
+  IPasswordRules,
 }

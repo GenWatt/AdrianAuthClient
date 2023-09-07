@@ -1,10 +1,13 @@
-FROM node:alpine AS Development
+FROM node:14.15.4-slim AS Development
 
-EXPOSE 3000
-WORKDIR /adrianauth
+WORKDIR /app
+EXPOSE 5173
+
 COPY package.json ./
 COPY package-lock.json ./
-COPY ./ ./
+
 RUN npm i
+
+COPY ./ ./
 
 CMD ["npm", "run", "dev"]
