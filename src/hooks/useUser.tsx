@@ -17,6 +17,7 @@ export default function useUser(navigateToLogin: boolean = true) {
     if (error.response?.status === 401) {
      
       if (navigateToLogin) {
+        console.log('navigate to login')
         queryClient.removeQueries('user')
         toastContext?.addErrorToast({
           message: 'Your session has expired',

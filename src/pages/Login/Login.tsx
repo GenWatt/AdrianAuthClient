@@ -7,7 +7,7 @@ import { loginUser } from '../../api/userApi'
 import { NavLink, useNavigate, useSearchParams } from 'react-router-dom'
 import useError from '../../hooks/useError'
 import Button from '../../UI/Button'
-import { useContext, useEffect } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { ToastContext } from '../../context/ToastContext'
 import useUser from '../../hooks/useUser'
 
@@ -16,6 +16,8 @@ const initalValues: ILoginUser = {
   password: '',
   callbackUrl: '',
 }
+
+let isRedirecting = false
 
 export default function Login() {
   const { handleError } = useError()
@@ -37,25 +39,35 @@ export default function Login() {
     await loginMutation.mutateAsync(values)
     queryClient.invalidateQueries('user')
 
-    if (values.callbackUrl) {
-      toastContext?.addSuccessToast({
-        message: `Login successful, redirecting to ${brandName}`,
-      })
-      window.location.href = values.callbackUrl
-      return
-    }
-
+    if(redirectToCallback()) return
     navigate('/account/me')
   }
 
   const loginForm = useFormik({
     initialValues: initalValues,
     onSubmit: submit,
-  }) 
+  })
+
+  const redirectToCallback = (): boolean => {
+    if (initalValues.callbackUrl && !isRedirecting) {
+      isRedirecting = true
+      toastContext?.addSuccessToast({
+        message: `Login successful, redirecting to ${brandName}`,
+      })
+      window.location.href = initalValues.callbackUrl
+      return true
+    }
+    return false
+  }
 
   useEffect(() => {
     if (userData.data?.user) {
+      if (redirectToCallback()) return
       navigate('/account/me')
+    }
+
+    return () => {
+      isRedirecting = false
     }
   }, [userData.data?.user])
 
