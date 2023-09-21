@@ -7,7 +7,7 @@ import { loginUser } from '../../api/userApi'
 import { NavLink, useNavigate, useSearchParams } from 'react-router-dom'
 import useError from '../../hooks/useError'
 import Button from '../../UI/Button'
-import { useContext, useEffect, useState } from 'react'
+import { useContext, useEffect } from 'react'
 import { ToastContext } from '../../context/ToastContext'
 import useUser from '../../hooks/useUser'
 
@@ -16,8 +16,6 @@ const initalValues: ILoginUser = {
   password: '',
   callbackUrl: '',
 }
-
-let isRedirecting = false
 
 export default function Login() {
   const { handleError } = useError()
@@ -49,10 +47,10 @@ export default function Login() {
   })
 
   const redirectToCallback = (): boolean => {
-    if (initalValues.callbackUrl && !isRedirecting) {
-      isRedirecting = true
+    if (initalValues.callbackUrl) {
       toastContext?.addSuccessToast({
         message: `Login successful, redirecting to ${brandName}`,
+        unique: true,
       })
       window.location.href = initalValues.callbackUrl
       return true
@@ -64,10 +62,6 @@ export default function Login() {
     if (userData.data?.user) {
       if (redirectToCallback()) return
       navigate('/account/me')
-    }
-
-    return () => {
-      isRedirecting = false
     }
   }, [userData.data?.user])
 
